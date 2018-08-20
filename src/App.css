@@ -1,0 +1,33 @@
+.App {
+  text-align: center;
+}
+
+.page-header {grid-area: header;
+  text-align: center;
+  border: 1px solid black;
+  padding: 15px;
+}
+.page-menu {grid-area: menubar;
+  border: 1px solid black;
+}
+
+.page-menu ul li {
+  display: inline;
+  padding: 3px 10px 3px 10px;
+}
+
+.page-body {grid-area: bodyarea;
+  border: 1px solid black;
+  padding: 3px;
+}
+
+.grid-container {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-areas: 'header header header header header header'
+                      'menubar menubar menubar menubar menubar menubar'
+                      'bodyarea bodyarea bodyarea bodyarea bodyarea bodyarea'
+  ;
+  grid-template-rows: 50px 50px auto;
+}
+
