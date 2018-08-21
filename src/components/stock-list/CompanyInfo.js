@@ -146,6 +146,9 @@ class CompanyInfo extends Component {
                     )}
                 </div>
                 <div className='info-grid'>
+                    <div className='info-header'>Historical Signals</div>
+                </div>
+                <div className='info-grid'>
                     <div className='info-header'>Selected Statistics</div>
                     {
                         companyInfo.statisticList.map(s=>
