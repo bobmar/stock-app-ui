@@ -80,10 +80,26 @@ class CompanyInfo extends Component {
         }
     }
 
+    renderHistSignals = (signals)=> {
+        if (signals !== undefined && signals.length > 0) {
+            return signals.map(s=>
+                <div key={s.signalId}>
+                    <div className='sub-title'>{s.priceDate.substring(0,10)}</div>
+                    <div>{s.signalType}</div>
+                </div>
+            )
+        }
+        else {
+            return <div>None found</div>
+        }
+
+    }
+
     render() {
         let companyInfo = this.state.priceInfo;
         if (this.props.priceInfo !== {}) {
             companyInfo = this.props.priceInfo;
+            console.log(companyInfo);
         }
         return (
             <div>
@@ -137,7 +153,7 @@ class CompanyInfo extends Component {
                     )}
                 </div>
                 <div className='info-grid'>
-                    <div className='info-header'>Recent Signals</div>
+                    <div className='info-header'>Current Signals</div>
                     {companyInfo.signalList.map(s=>
                     <div key={s.signalId}>
                         <div className='sub-title'>{s.priceDate.substring(0,10)}</div>
@@ -146,7 +162,22 @@ class CompanyInfo extends Component {
                     )}
                 </div>
                 <div className='info-grid'>
-                    <div className='info-header'>Historical Signals</div>
+                    <div className='info-header'>Signals 4 Weeks Ago</div>
+                    {
+                        this.renderHistSignals(companyInfo.histSignals.fourWeek)
+                    }
+                </div>
+                <div className='info-grid'>
+                    <div className='info-header'>Signals 8 Weeks Ago</div>
+                    {
+                        this.renderHistSignals(companyInfo.histSignals.eightWeek)
+                    }
+                </div>
+                <div className='info-grid'>
+                    <div className='info-header'>Signals 12 Weeks Ago</div>
+                    {
+                        this.renderHistSignals(companyInfo.histSignals.twelveWeek)
+                    }
                 </div>
                 <div className='info-grid'>
                     <div className='info-header'>Selected Statistics</div>

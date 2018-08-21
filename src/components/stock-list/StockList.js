@@ -41,7 +41,12 @@ class StockList extends Component {
                     {
                         avgList: []
                     }
-                ]
+                ],
+                histSignals: {
+                    fourWeek: [],
+                    eightWeek: [],
+                    twelveWeek: []
+                }
             }
         }
     }
