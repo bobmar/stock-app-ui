@@ -4,11 +4,18 @@ import { buildUrl
     , PRICE_COMPOSITE_BY_ID
     , SIGNAL_BY_DATE_TYPES
     , stockChartsUrl } from '../../config/UrlConfig';
+import '../../assets/css/Stocks.css';
 import axios from 'axios';
 
 class SignalResult extends Component {
     constructor(props) {
-        this.props = props;
+        super(props);
+        this.state = {
+            signalTypeList: this.props.signalTypeList(),
+            selectedSignal: this.props.selectedSignal(),
+            useLocalSignals: false
+        }
+        this.retrieveSignals(this.state.selectedSignal);
     }
 
     findSignalDesc = (signalCode)=>{
@@ -20,7 +27,7 @@ class SignalResult extends Component {
     }
 
     retrieveSignals = (signalType, signalDate)=>{
-        console.log('retrieveSignals', signalDate);
+        console.log('retrieveSignals signalDate', signalDate);
         let queryDate = signalDate;
         if (queryDate === undefined) {
             queryDate = this.state.selectedSignalDate;
@@ -44,6 +51,7 @@ class SignalResult extends Component {
                         selectedSignal: signalType
                     })
                 }
+                console.log('retrieveSignals returned ', this.state.signalList);
             },
             res=>{
                 console.log("retrieveSignals failed", res.data);
@@ -56,7 +64,35 @@ class SignalResult extends Component {
         this.setState({
             selectedSignalDate: e.target.value
         });
-        this.retrieveSignals(this.state.selectedSignal, e.target.value);
+        this.retrieveSignals(this.props.selectedSignal(), e.target.value);
+    }
+
+    retrieveSignalsWithOverlay = (overlaySignal)=> {
+        let signalDate = this.state.selectedSignalDate;
+        if (signalDate === undefined) {
+            signalDate = this.props.selectedSignalDate();
+        }
+        let request = {
+            signalDate: signalDate,
+            signalType: this.props.selectedSignal(),
+            overlaySignalType: overlaySignal
+        }
+        this.setState({useLocalSignals: false});
+        console.log('retrieveSignalsWithOverlay',request);
+        axios.post(buildUrl(SIGNAL_BY_DATE_TYPES), request)
+        .then(
+            res=>{
+                this.setState(
+                    {
+                        signalList: res.data,
+                        useLocalSignals: true
+                    }
+                );
+            },
+            res=>{
+                console.log('retrieveSignalsWithOverlay failed', res.data);
+            }
+        );
     }
 
     handleOverlaySelect = (e)=>{
@@ -71,7 +107,20 @@ class SignalResult extends Component {
         this.retrieveSignalsWithOverlay(overlaySignalParam);
     }
 
+    noResults = ()=>{
+        let nrTag = ''
+        if (this.state.signalList === undefined || this.state.signalList.length === 0) {
+            nrTag = <div>No results found</div>
+        }
+        return nrTag;
+    }
+
     render() {
+        let signalList = this.props.signalList();
+        if (this.state.useLocalSignals) {
+            signalList = this.state.signalList;
+        }
+        let signalTypeList = this.props.signalTypeList();
         return (
             <div>
                 <div>
@@ -84,25 +133,28 @@ class SignalResult extends Component {
                     <span style={{fontWeight:'bold', padding:'2px 15px 2px 2px'}}>{this.state.selectedSignalDesc}</span>
                     <span>
                         <select defaultValue={this.state.overlaySignalType} onChange={this.handleOverlaySelect} onClick={()=>{this.handleOverlaySelect()}}>
-                            {this.state.signalTypeList.map(t=>
+                            {signalTypeList.map(t=>
                                 <option key={t.signalCode} value={t.signalCode}>{t.signalDesc}</option>
                             )}
                         </select>
                     </span>
                 </div>
                 <div className="info-grid">
-                {this.state.signalList.map(s=>
-                    <div key={s.signalId}>
-                        <div className={s.multiList?'multi-list':'single-list'}><a href={stockChartsUrl(s.tickerSymbol)} target='_blank'>{s.tickerSymbol}</a></div>
-                        <div className="sub-title">Closing Price</div>
-                        <div>{Number(s.closePrice).toFixed(2)}</div>
-                        <div className="sub-title">Volume</div>
-                        <div>{s.volume}</div>
-                    </div>
-                )}
                 {
-                    this.noResults()
+                    signalList && (
+                        signalList.map(s=>
+                            <div key={s.signalId}>
+                                <div className={s.multiList?'multi-list':'single-list'}><a href={stockChartsUrl(s.tickerSymbol)} target='_blank'>{s.tickerSymbol}</a></div>
+                                <div className="sub-title">Closing Price</div>
+                                <div>{Number(s.closePrice).toFixed(2)}</div>
+                                <div className="sub-title">Volume</div>
+                                <div>{s.volume}</div>
+                            </div>
+                        )
+    
+                    )
                 }
+                {this.noResults()}
                 </div>
             </div>
         )

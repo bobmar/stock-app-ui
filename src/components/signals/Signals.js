@@ -3,8 +3,8 @@ import { buildUrl
     , SIGNAL_TYPE_LIST
     , SIGNAL_BY_DATE_TYPE 
     , PRICE_COMPOSITE_BY_ID
-    , SIGNAL_BY_DATE_TYPES
-    , stockChartsUrl } from '../../config/UrlConfig';
+    , SIGNAL_BY_DATE_TYPES} from '../../config/UrlConfig';
+import SignalResult from './SignalResult';
 import axios from 'axios';
 
 class Signals extends Component {
@@ -90,37 +90,8 @@ class Signals extends Component {
         );
     }
 
-    retrieveSignalsWithOverlay = (overlaySignal)=> {
-        let request = {
-            signalDate: this.state.selectedSignalDate,
-            signalType: this.state.selectedSignal,
-            overlaySignalType: overlaySignal
-        }
-        axios.post(buildUrl(SIGNAL_BY_DATE_TYPES), request)
-        .then(
-            res=>{
-                this.setState(
-                    {
-                        signalList: res.data
-                    }
-                );
-            },
-            res=>{
-                console.log('retrieveSignalsWithOverlay failed', res.data);
-            }
-        );
-    }
-
     retrieveCompositePrice = (priceId)=> {
 
-    }
-
-    noResults = ()=>{
-        let nrTag = ''
-        if (this.state.signalList.length === 0) {
-            nrTag = <div>No results found</div>
-        }
-        return nrTag;
     }
 
     handleDateChg = (e)=>{
@@ -147,6 +118,21 @@ class Signals extends Component {
         this.retrieveSignalTypes();
     }
 
+    getSignalList = ()=> {
+        return this.state.signalList;
+    }
+
+    getSignalTypeList = ()=> {
+        return this.state.signalTypeList;
+    }
+
+    getSelectedSignal = ()=> {
+        return this.state.selectedSignal;
+    }
+
+    getSelectedSignalDate = ()=> {
+        return this.state.selectedSignalDate;
+    }
     render() {
         return (
             <div>
@@ -166,42 +152,13 @@ class Signals extends Component {
                         </div>
                     </div>
                     <div>
-                   {
-                            //begin
-                   }
-                        <div>
-                            <label htmlFor="priceDate" className="sub-title">Price Date</label>
-                            <input type="date" id="priceDate" 
-                                defaultValue={this.state.selectedSignalDate} 
-                                onChange={this.handleDateChg}/>
-                        </div>
-                        <div>
-                            <span style={{fontWeight:'bold', padding:'2px 15px 2px 2px'}}>{this.state.selectedSignalDesc}</span>
-                            <span>
-                                <select defaultValue={this.state.overlaySignalType} onChange={this.handleOverlaySelect} onClick={()=>{this.handleOverlaySelect()}}>
-                                    {this.state.signalTypeList.map(t=>
-                                        <option key={t.signalCode} value={t.signalCode}>{t.signalDesc}</option>
-                                    )}
-                                </select>
-                            </span>
-                        </div>
-                        <div className="info-grid">
-                        {this.state.signalList.map(s=>
-                            <div key={s.signalId}>
-                                <div className={s.multiList?'multi-list':'single-list'}><a href={stockChartsUrl(s.tickerSymbol)} target='_blank'>{s.tickerSymbol}</a></div>
-                                <div className="sub-title">Closing Price</div>
-                                <div>{Number(s.closePrice).toFixed(2)}</div>
-                                <div className="sub-title">Volume</div>
-                                <div>{s.volume}</div>
-                            </div>
-                        )}
-                        {
-                            this.noResults()
-                        }
-                        </div>
-                    {
-                        // end
-                    }
+                        <div className='info-header'>{this.state.selectedSignalDesc}</div>
+                        <SignalResult
+                            signalList={this.getSignalList}
+                            signalTypeList={this.getSignalTypeList}
+                            selectedSignal={this.getSelectedSignal}
+                            selectedSignalDate={this.getSelectedSignalDate}
+                        />
                     </div>
                 </div>
             </div>
