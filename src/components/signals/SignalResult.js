@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { buildUrl
     , SIGNAL_BY_DATE_TYPE 
-    , PRICE_COMPOSITE_BY_ID
     , SIGNAL_BY_DATE_TYPES
     , stockChartsUrl } from '../../config/UrlConfig';
 import '../../assets/css/Stocks.css';
@@ -12,8 +11,7 @@ class SignalResult extends Component {
         super(props);
         this.state = {
             signalTypeList: this.props.signalTypeList(),
-            selectedSignal: this.props.selectedSignal(),
-            useLocalSignals: false
+            selectedSignal: this.props.selectedSignal()
         }
         this.retrieveSignals(this.state.selectedSignal);
     }
@@ -27,7 +25,6 @@ class SignalResult extends Component {
     }
 
     retrieveSignals = (signalType, signalDate)=>{
-        console.log('retrieveSignals signalDate', signalDate);
         let queryDate = signalDate;
         if (queryDate === undefined) {
             queryDate = this.state.selectedSignalDate;
@@ -36,15 +33,15 @@ class SignalResult extends Component {
             signalDate: queryDate,
             signalType: signalType
         }
+        console.log('retrieveSignals request', request);
         axios.post(buildUrl(SIGNAL_BY_DATE_TYPE), request)
         .then(
             res=>{
                 this.setState(
                     {
-                        signalList: res.data,
+                        signalList: res.data
                     }
                 )
-                this.findSignalDesc(signalType);
                 if (res.data.length > 0) {
                     this.setState({
                         selectedSignalDate: res.data[0].priceDate.substring(0,10),
@@ -54,6 +51,7 @@ class SignalResult extends Component {
                 console.log('retrieveSignals returned ', this.state.signalList);
             },
             res=>{
+                this.setState({useLocalSignals: false});
                 console.log("retrieveSignals failed", res.data);
             }
         );
@@ -64,7 +62,7 @@ class SignalResult extends Component {
         this.setState({
             selectedSignalDate: e.target.value
         });
-        this.retrieveSignals(this.props.selectedSignal(), e.target.value);
+        this.retrieveSignals(this.state.selectedSignal, e.target.value);
     }
 
     retrieveSignalsWithOverlay = (overlaySignal)=> {
@@ -74,7 +72,7 @@ class SignalResult extends Component {
         }
         let request = {
             signalDate: signalDate,
-            signalType: this.props.selectedSignal(),
+            signalType: this.state.selectedSignal,
             overlaySignalType: overlaySignal
         }
         this.setState({useLocalSignals: false});
@@ -107,20 +105,43 @@ class SignalResult extends Component {
         this.retrieveSignalsWithOverlay(overlaySignalParam);
     }
 
-    noResults = ()=>{
+    noResults = (signalList)=>{
         let nrTag = ''
-        if (this.state.signalList === undefined || this.state.signalList.length === 0) {
+        if (signalList === undefined || signalList.length === 0) {
             nrTag = <div>No results found</div>
         }
         return nrTag;
     }
 
-    render() {
-        let signalList = this.props.signalList();
-        if (this.state.useLocalSignals) {
-            signalList = this.state.signalList;
+    componentDidMount() {
+        this.setState(
+            {
+                selectedSignalDate: this.props.selectedSignalDate(),
+                selectedSignal: this.props.selectedSignal(),
+                signalTypeList: this.props.signalTypeList()
+            }
+        );
+        console.log('componentDidMount', this.state);
+    }
+
+    componentDidUpdate(prevProps) {
+        console.log('componentDidUpdate' , this.props.selectedSignalDate(), prevProps.selectedSignalDate());
+        if (this.props.selectedSignalDate() !== prevProps.selectedSignalDate()) {
+            this.setState({selectedSignalDate: this.props.selectedSignalDate()});
         }
-        let signalTypeList = this.props.signalTypeList();
+        console.log('componentDidUpdate' , this.props.selectedSignal(), prevProps.selectedSignal());
+        if (this.props.selectedSignal() !== this.state.selectedSignal) {
+            this.setState({selectedSignal: this.props.selectedSignal()});
+            this.retrieveSignals(this.props.selectedSignal());
+        }
+        console.log('componentDidUpdate' , this.props.signalTypeList(), prevProps.signalTypeList());
+        if (this.props.signalTypeList().length !== this.state.signalTypeList.length) {
+            this.setState({signalTypeList: this.props.signalTypeList()});
+        }
+        console.log('componentDidUpdate', this.state);
+    }
+
+    render() {
         return (
             <div>
                 <div>
@@ -130,10 +151,9 @@ class SignalResult extends Component {
                         onChange={this.handleDateChg}/>
                 </div>
                 <div>
-                    <span style={{fontWeight:'bold', padding:'2px 15px 2px 2px'}}>{this.state.selectedSignalDesc}</span>
                     <span>
                         <select defaultValue={this.state.overlaySignalType} onChange={this.handleOverlaySelect} onClick={()=>{this.handleOverlaySelect()}}>
-                            {signalTypeList.map(t=>
+                            {this.state.signalTypeList.map(t=>
                                 <option key={t.signalCode} value={t.signalCode}>{t.signalDesc}</option>
                             )}
                         </select>
@@ -141,8 +161,8 @@ class SignalResult extends Component {
                 </div>
                 <div className="info-grid">
                 {
-                    signalList && (
-                        signalList.map(s=>
+                    this.state.signalList && (
+                        this.state.signalList.map(s=>
                             <div key={s.signalId}>
                                 <div className={s.multiList?'multi-list':'single-list'}><a href={stockChartsUrl(s.tickerSymbol)} target='_blank'>{s.tickerSymbol}</a></div>
                                 <div className="sub-title">Closing Price</div>
@@ -154,7 +174,7 @@ class SignalResult extends Component {
     
                     )
                 }
-                {this.noResults()}
+                {this.noResults(this.state.signalList)}
                 </div>
             </div>
         )
