@@ -5,66 +5,8 @@ class CompanyInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            priceInfo: {
-                'priceId': '',
-                'tickerSymbol': '',
-                'price':    {
-                   'priceId': '',
-                   'tickerSymbol': '',
-                   'priceDate': '',
-                   'closePrice': 0,
-                   'openPrice': 0,
-                   'lowPrice': 0,
-                   'highPrice': 0,
-                   'volume': 0,
-                   'highLowRange': 0,
-                   'highLowVsClosePct': 0,
-                   'openCloseVsHighLowPct': 0,
-                   'closeVsLowDiffPct': 0,
-                   'closeVsHighDiffPct': 0,
-                   'dollarVolume': 0,
-                   'openCloseRange': 0
-                },
-                'avgPrices': [
-                    {
-                        'days': 10,
-                        'avgPrice' : 22.22,
-                        'avgVolume': 222222
-                    },
-                    {
-                        'days': 50,
-                        'avgPrice' : 22.23,
-                        'avgVolume': 222223
-                    },
-                    {
-                        'days': 200,
-                        'avgPrice' : 22.24,
-                        'avgVolume': 222224
-                    }
-                ],
-                'signalList': [
-                    {
-                        'signalDate': '06-22-2018',
-                        'signalName': 'Closing Price Near High'
-                    },
-                    {
-                        'signalDate': '06-22-2018',
-                        'signalName': 'Average Price Uptrend'
-                    },
-                    {
-                        'signalDate': '06-22-2018',
-                        'signalName': 'Closing Price Near High'
-                    }
-                ],
-                'statisticList': [
-                    {
-                        'statDate': '06-22-2018',
-                        'statName': 'Up/Down Volume Ratio',
-                        'statValue': '1.5'
-                    }
-                ]
-            }
-        }
+            priceInfo: this.props.priceInfo
+        };
     }
 
     handleDateChg = (evt)=> {
@@ -95,12 +37,21 @@ class CompanyInfo extends Component {
 
     }
 
+    componentDidMount() {
+        this.setState({
+            priceInfo: this.props.priceInfo
+        });
+    }
+
+    componentDidUpdate(prev) {
+        if (this.props.priceInfo != prev.priceInfo) {
+            this.setState({priceInfo: this.props.priceInfo});
+        }
+    }
+
     render() {
         let companyInfo = this.state.priceInfo;
-        if (this.props.priceInfo !== {}) {
-            companyInfo = this.props.priceInfo;
-            console.log(companyInfo);
-        }
+        console.log('CompanyInfo.render ', companyInfo);
         return (
             <div>
                 <div>{this.returnLink()}</div>

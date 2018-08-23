@@ -169,6 +169,7 @@ class SignalResult extends Component {
                                 <div>{Number(s.closePrice).toFixed(2)}</div>
                                 <div className="sub-title">Volume</div>
                                 <div>{s.volume}</div>
+                                <div><button onClick={()=>{this.props.setPriceId(s.priceId)}}>Price Info</button></div>
                             </div>
                         )
     

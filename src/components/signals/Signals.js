@@ -5,6 +5,7 @@ import { buildUrl
     , PRICE_COMPOSITE_BY_ID
     , SIGNAL_BY_DATE_TYPES} from '../../config/UrlConfig';
 import SignalResult from './SignalResult';
+import CompanyInfo from '../stock-list/CompanyInfo';
 import axios from 'axios';
 
 class Signals extends Component {
@@ -53,11 +54,40 @@ class Signals extends Component {
     handleSignalClick = (signalCode)=>{
         this.setState({selectedSignal: signalCode});
         this.findSignalDesc(signalCode);
-        console.log('Signals.handleSignalClick',signalCode, this.state);
     }
 
     retrieveCompositePrice = (priceId)=> {
+        let request = {
+            priceId: priceId
+        }
+        axios.post(buildUrl(PRICE_COMPOSITE_BY_ID), request)
+        .then(
+            res=>{
+                this.setState({priceInfo:res.data});
+                console.log('Signals.retrieveCompositePrice set priceInfo', res.data);
+            },
+            res=>{
+                console.log('retrieveCompositePrice failed', res);
+            }
+        );
+    }
 
+    renderSection = ()=> {
+        let sectionData = '';
+        console.log('Signals.renderSection', this.state.priceInfo);
+        if (this.state.showCompanyInfo && this.state.priceInfo !== undefined) {
+            sectionData = <CompanyInfo priceInfo={this.state.priceInfo}/>
+        }
+        else {
+            sectionData = <SignalResult
+                signalTypeList={this.getSignalTypeList}
+                selectedSignal={this.getSelectedSignal}
+                selectedSignalDate={this.getSelectedSignalDate}
+                setPriceId={this.setPriceId}
+            />
+
+        }
+        return sectionData;
     }
 
     componentDidMount() {
@@ -75,6 +105,15 @@ class Signals extends Component {
     getSelectedSignalDate = ()=> {
         return this.state.selectedSignalDate;
     }
+
+    setPriceId = (priceId)=> {
+        console.log('setPriceId retrieve composite price for ' + priceId);
+        this.retrieveCompositePrice(priceId);
+        this.setState({
+            showCompanyInfo: true
+        });
+    }
+
     render() {
         return (
             <div>
@@ -95,11 +134,7 @@ class Signals extends Component {
                     </div>
                     <div>
                         <div className='info-header'>{this.state.selectedSignalDesc}</div>
-                        <SignalResult
-                            signalTypeList={this.getSignalTypeList}
-                            selectedSignal={this.getSelectedSignal}
-                            selectedSignalDate={this.getSelectedSignalDate}
-                        />
+                        {this.renderSection()}
                     </div>
                 </div>
             </div>
