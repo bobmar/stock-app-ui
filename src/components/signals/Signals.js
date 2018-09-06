@@ -72,11 +72,19 @@ class Signals extends Component {
         );
     }
 
+    toggleCompanyInfo = ()=>{
+        this.setState(
+            {
+                showCompanyInfo: !this.state.showCompanyInfo
+            }
+        );
+    }
+
     renderSection = ()=> {
         let sectionData = '';
         console.log('Signals.renderSection', this.state.priceInfo);
         if (this.state.showCompanyInfo && this.state.priceInfo !== undefined) {
-            sectionData = <CompanyInfo priceInfo={this.state.priceInfo}/>
+            sectionData = <CompanyInfo priceInfo={this.state.priceInfo} fromPage={this.toggleCompanyInfo}/>
         }
         else {
             sectionData = <SignalResult

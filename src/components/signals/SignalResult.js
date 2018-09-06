@@ -5,6 +5,8 @@ import { buildUrl
     , stockChartsUrl } from '../../config/UrlConfig';
 import '../../assets/css/Stocks.css';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+
 
 class SignalResult extends Component {
     constructor(props) {
@@ -169,7 +171,11 @@ class SignalResult extends Component {
                                 <div>{Number(s.closePrice).toFixed(2)}</div>
                                 <div className="sub-title">Volume</div>
                                 <div>{s.volume}</div>
-                                <div><button onClick={()=>{this.props.setPriceId(s.priceId)}}>Price Info</button></div>
+                                <div>
+                                    <Button color='primary' size='small' variant='outlined' onClick={()=>{this.props.setPriceId(s.priceId)}}>
+                                        Price Info
+                                    </Button>
+                                </div>
                             </div>
                         )
     

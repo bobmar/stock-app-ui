@@ -3,11 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^1.3.0",
+    "@material-ui/core": "^3.0.2",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
-    "primeicons": "^1.0.0-beta.9",
-    "primereact": "^1.6.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.3.1",

@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import '../../assets/css/Stocks.css';
 import ImportTickerList from './ImportTickerList';
-import {DataTable} from 'primereact/components/datatable/DataTable';
-import {Column} from 'primereact/components/column/Column';
 import axios from 'axios';
 import {buildUrl, TICKER_LIST_SAVE} from '../../config/UrlConfig';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 class ManageTickers extends Component {
     constructor() {
@@ -71,10 +72,15 @@ class ManageTickers extends Component {
                             {this.state.saveMsg}
                         </div>
                         <div>
-                            <DataTable value={tickerList} >
-                                <Column field="tickerSymbol" header="Ticker"/>
-                                <Column field="companyName" header="Company Name"/>
-                            </DataTable>
+                            <List>
+                            {
+                                tickerList.map(t=>
+                                <ListItem>
+                                    <ListItemText primary={t.tickerSymbol} secondary={t.companyName}/>
+                                </ListItem>
+                                )
+                            }
+                            </List>
                         </div>
                         <div>
                             {this.state.discardMsg}

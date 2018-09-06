@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import '../../assets/css/Stocks.css';
+import Button from '@material-ui/core/Button';
 
 class CompanyInfo extends Component {
     constructor(props) {
@@ -18,7 +19,9 @@ class CompanyInfo extends Component {
             return <div></div>
         }
         else {
-            return <div>Return to {this.props.fromPage}</div>
+            return <div>
+                <Button onClick={this.props.fromPage}>Return</Button>
+            </div>
         }
     }
 
@@ -44,7 +47,7 @@ class CompanyInfo extends Component {
     }
 
     componentDidUpdate(prev) {
-        if (this.props.priceInfo != prev.priceInfo) {
+        if (this.props.priceInfo !== prev.priceInfo) {
             this.setState({priceInfo: this.props.priceInfo});
         }
     }
