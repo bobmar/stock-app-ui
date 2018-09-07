@@ -20,7 +20,7 @@ class CompanyInfo extends Component {
         }
         else {
             return <div>
-                <Button onClick={this.props.fromPage}>Return</Button>
+                <Button onClick={this.props.fromPage} variant='outlined' color='primary'>{this.props.returnLabel}</Button>
             </div>
         }
     }

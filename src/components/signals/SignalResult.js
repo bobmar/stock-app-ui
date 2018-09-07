@@ -6,7 +6,9 @@ import { buildUrl
 import '../../assets/css/Stocks.css';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
-
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 
 class SignalResult extends Component {
     constructor(props) {
@@ -152,14 +154,20 @@ class SignalResult extends Component {
                         defaultValue={this.state.selectedSignalDate} 
                         onChange={this.handleDateChg}/>
                 </div>
-                <div>
-                    <span>
-                        <select defaultValue={this.state.overlaySignalType} onChange={this.handleOverlaySelect} onClick={()=>{this.handleOverlaySelect()}}>
-                            {this.state.signalTypeList.map(t=>
-                                <option key={t.signalCode} value={t.signalCode}>{t.signalDesc}</option>
-                            )}
-                        </select>
-                    </span>
+                <div style={{padding:'5px'}}>
+                    <InputLabel htmlFor="overlay-signal">Signal</InputLabel>
+                    <Select
+                        value={this.state.overlaySignalType}
+                        onChange={this.handleOverlaySelect}
+                        inputProps={{
+                        name: 'signal',
+                        id: 'overlay-signal',
+                        }}
+                    >
+                        {this.state.signalTypeList.map(t=>
+                        <MenuItem value={t.signalCode}>{t.signalDesc}</MenuItem>
+                        )}
+                    </Select>
                 </div>
                 <div className="info-grid">
                 {

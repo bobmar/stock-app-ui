@@ -84,7 +84,7 @@ class Signals extends Component {
         let sectionData = '';
         console.log('Signals.renderSection', this.state.priceInfo);
         if (this.state.showCompanyInfo && this.state.priceInfo !== undefined) {
-            sectionData = <CompanyInfo priceInfo={this.state.priceInfo} fromPage={this.toggleCompanyInfo}/>
+            sectionData = <CompanyInfo priceInfo={this.state.priceInfo} fromPage={this.toggleCompanyInfo} returnLabel='Show Signals'/>
         }
         else {
             sectionData = <SignalResult
