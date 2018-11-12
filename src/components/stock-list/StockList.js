@@ -46,7 +46,8 @@ class StockList extends Component {
                     fourWeek: [],
                     eightWeek: [],
                     twelveWeek: []
-                }
+                },
+                ibdStatList:[]
             }
         }
     }

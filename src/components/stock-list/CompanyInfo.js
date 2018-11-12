@@ -40,6 +40,24 @@ class CompanyInfo extends Component {
 
     }
 
+    renderIbdStats = (ibdStats) => {
+      if (ibdStats !== null && ibdStats.length > 0) {
+        return ibdStats.map(s=>
+          <div key={s.statId}>
+            <div className='sub-title'>IBD {s.priceDate.substring(0,10)}</div>
+            <div>Composite {s.compositeRating}</div>
+            <div>RS {s.relativeStrength}</div>
+            <div>GS {s.groupStrength}</div>
+            <div>SMR {s.salesMarginRoe}</div>
+            <div>A/D {s.accumDist}</div>
+          </div>
+        )
+      }
+      else {
+        return <div>None found</div>
+      }
+    }
+
     componentDidMount() {
         this.setState({
             priceInfo: this.props.priceInfo
@@ -88,7 +106,7 @@ class CompanyInfo extends Component {
                     </div>
                     <div>
                         <div className='sub-title'>Volume</div>
-                        <div>{companyInfo.price.volume}</div>                   
+                        <div>{companyInfo.price.volume}</div>
                     </div>
                 </div>
                 <div className='info-grid'>
@@ -143,6 +161,12 @@ class CompanyInfo extends Component {
                         </div>
                         )
                     }
+                </div>
+                <div className='info-grid'>
+                  <div className='info-header'>IBD Statistics</div>
+                  {
+                    this.renderIbdStats(companyInfo.ibdStatList)
+                  }
                 </div>
             </div>
         );
