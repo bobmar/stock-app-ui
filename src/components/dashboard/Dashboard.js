@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import '../../assets/css/Stocks.css';
 import axios from 'axios';
 import {DASHBOARD_LIST, DASHBOARD_BULL_BEAR, buildUrl} from '../../config/UrlConfig'
+import DashboardItem from './DashboardItem'
 
 class Dashboard extends Component {
     constructor() {
@@ -14,101 +15,20 @@ class Dashboard extends Component {
                         "priceId": "GOOS:2018-06-25",
                         "statisticType": "WKCLSPCT",
                         "statisticValue": -12.726191418753825,
-                        "tickerSymbol": "GOOS",
+                        "tickerSymbol": "Loading",
                         "priceDate": "2018-06-25T07:00:00.000+0000"
-                     },
-                           {
-                        "statId": "PAYC:2018-06-25:WKCLSPCT",
-                        "priceId": "PAYC:2018-06-25",
-                        "statisticType": "WKCLSPCT",
-                        "statisticValue": -11.646725897255452,
-                        "tickerSymbol": "PAYC",
-                        "priceDate": "2018-06-25T07:00:00.000+0000"
-                     },
-                           {
-                        "statId": "STMP:2018-06-25:WKCLSPCT",
-                        "priceId": "STMP:2018-06-25",
-                        "statisticType": "WKCLSPCT",
-                        "statisticValue": -11.590053797462515,
-                        "tickerSymbol": "STMP",
-                        "priceDate": "2018-06-25T07:00:00.000+0000"
-                     },
-                           {
-                        "statId": "GRUB:2018-06-25:WKCLSPCT",
-                        "priceId": "GRUB:2018-06-25",
-                        "statisticType": "WKCLSPCT",
-                        "statisticValue": -10.719299122807017,
-                        "tickerSymbol": "GRUB",
-                        "priceDate": "2018-06-25T07:00:00.000+0000"
-                     }
-                    ],
+                     }],
                 bullishList: [
-                    {
-                        "statId": "DGX:2018-06-25:WKCLSPCT",
-                        "priceId": "DGX:2018-06-25",
-                        "statisticType": "WKCLSPCT",
-                        "statisticValue": 2.2318614300508073,
-                        "tickerSymbol": "DGX",
-                        "priceDate": "2018-06-25T07:00:00.000+0000"
-                     },
-                           {
-                        "statId": "TEX:2018-06-25:WKCLSPCT",
-                        "priceId": "TEX:2018-06-25",
-                        "statisticType": "WKCLSPCT",
-                        "statisticValue": 2.468511272833469,
-                        "tickerSymbol": "TEX",
-                        "priceDate": "2018-06-25T07:00:00.000+0000"
-                     },
-                           {
-                        "statId": "SUPN:2018-06-25:WKCLSPCT",
-                        "priceId": "SUPN:2018-06-25",
-                        "statisticType": "WKCLSPCT",
-                        "statisticValue": 2.626813358209903,
-                        "tickerSymbol": "SUPN",
-                        "priceDate": "2018-06-25T07:00:00.000+0000"
-                     },
-                           {
-                        "statId": "SNE:2018-06-25:WKCLSPCT",
-                        "priceId": "SNE:2018-06-25",
-                        "statisticType": "WKCLSPCT",
-                        "statisticValue": 2.6741230234609032,
-                        "tickerSymbol": "SNE",
-                        "priceDate": "2018-06-25T07:00:00.000+0000"
-                     }
                 ]
             
             },
             dashboardList: [
                 {
                     "statisticCode": "WKCLSPCT",
-                    "statisticDesc": "Weekly Closing Price Change Pct",
+                    "statisticDesc": "Loading",
                     "className": null,
                     "showInDashboard": true
-                 },
-                    {
-                    "statisticCode": "DYPCTCHG",
-                    "statisticDesc": "Daily Price Percentage Change",
-                    "className": null,
-                    "showInDashboard": true
-                 },
-                    {
-                    "statisticCode": "UPDNVOL50",
-                    "statisticDesc": "Up/Down Volume over past 50 Days",
-                    "className": null,
-                    "showInDashboard": true
-                 },
-                    {
-                    "statisticCode": "DYPRCV50A",
-                    "statisticDesc": "Daily Price vs. 50-day Average",
-                    "className": null,
-                    "showInDashboard": true
-                 },
-                    {
-                    "statisticCode": "DYPRCV200A",
-                    "statisticDesc": "Daily Price vs. 200-day Average",
-                    "className": null,
-                    "showInDashboard": true
-                 }
+                }
             ],
             selectedId: 0
         }
@@ -189,10 +109,7 @@ class Dashboard extends Component {
                             <div className="info-grid">
                             {
                             this.state.resultMap.bullishList.map(item=>
-                                <div key={item.statId}>
-                                    <div className='sub-title'>{item.tickerSymbol}</div>
-                                    <div style={{fontWeight:'bold', color:'green'}}>{item.statisticValue.toFixed(2)}</div>
-                                </div>
+                                <DashboardItem item={item} color="green"/>
                                 )
                             }
                             </div>
@@ -200,10 +117,7 @@ class Dashboard extends Component {
                             <div className="info-grid">
                             {
                             this.state.resultMap.bearishList.map(item=>
-                                <div key={item.statId}>
-                                    <div className='sub-title'>{item.tickerSymbol}</div>
-                                    <div style={{fontWeight:'bold', color:'red'}}>{item.statisticValue.toFixed(2)}</div>
-                                </div>
+                                <DashboardItem item={item} color="red"/>
                                 )
                             }
                             </div>
