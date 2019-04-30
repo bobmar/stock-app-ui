@@ -7,6 +7,7 @@ import Signals from './components/signals/Signals';
 import Statistics from './components/statistics/Statistics';
 import {  BrowserRouter as Router, Route,  Link} from 'react-router-dom'
 import Button from '@material-ui/core/Button';
+import 'semantic-ui-css/semantic.min.css'
 
 class App extends Component {
   render() {

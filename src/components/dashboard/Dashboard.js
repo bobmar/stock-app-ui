@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import '../../assets/css/Stocks.css';
 import axios from 'axios';
 import {DASHBOARD_LIST, DASHBOARD_BULL_BEAR, buildUrl} from '../../config/UrlConfig'
+import {Table} from 'semantic-ui-react'
 import DashboardItem from './DashboardItem'
 
 class Dashboard extends Component {
     constructor() {
-        super();
+        super()
         this.state = {
             resultMap: {
                 bearishList: [
@@ -106,21 +107,37 @@ class Dashboard extends Component {
                         </div>
                         <div style={{fontWeight:'bold', padding: '3px'}}>{this.state.selectedStatDesc}</div>
                         <div style={{padding:'5px'}}>Bullish</div>
-                            <div className="info-grid">
-                            {
-                            this.state.resultMap.bullishList.map(item=>
-                                <DashboardItem item={item} color="green"/>
-                                )
+                            <Table striped>
+                                <Table.Header>
+                                    <Table.Row>
+                                        <Table.HeaderCell>Ticker</Table.HeaderCell>
+                                        <Table.HeaderCell textAlign='right'>Statistic Value</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>
+                                <Table.Body>
+                                {
+                                    this.state.resultMap.bullishList.map(item=>
+                                        <DashboardItem item={item} bullbear="positive"/>
+                                        )
                             }
-                            </div>
+                                </Table.Body>
+                            </Table>
                         <div style={{padding:'5px'}}>Bearish</div>
-                            <div className="info-grid">
+                            <Table striped>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.HeaderCell>Ticker</Table.HeaderCell>
+                                    <Table.HeaderCell textAlign='right'>Statistic Value</Table.HeaderCell>
+                                </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
                             {
-                            this.state.resultMap.bearishList.map(item=>
-                                <DashboardItem item={item} color="red"/>
-                                )
+                                this.state.resultMap.bearishList.map(item=>
+                                    <DashboardItem item={item} bullbear="negative"/>
+                                    )
                             }
-                            </div>
+                            </Table.Body>
+                            </Table>
                     </div>
                 </div>
             </div>

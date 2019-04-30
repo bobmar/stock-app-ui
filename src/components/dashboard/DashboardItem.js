@@ -1,13 +1,12 @@
 import React from 'react'
+import {Table} from 'semantic-ui-react'
 
 const DashboardItem = function (props) {
     return (
-        <div>
-            <div key={props.item.statId}>
-                <div className='sub-title'>{props.item.tickerSymbol}</div>
-                <div style={{fontWeight:'bold', color:props.color}}>{props.item.statisticValue.toFixed(2)}</div>
-            </div>
-        </div>
+        <Table.Row>
+            <Table.Cell>{props.item.tickerSymbol}</Table.Cell>
+            <Table.Cell textAlign='right'>{props.item.statisticValue.toFixed(2)}</Table.Cell>
+        </Table.Row>
     )
 }
 
