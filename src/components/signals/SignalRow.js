@@ -29,6 +29,20 @@ const SignalRow = function(props) {
                 <div className="sub-title">Volume</div>
                 <div>{props.signal.volume}</div>
             </Grid.Column>
+            <Grid.Column width={2}>
+                <div className="sub-title">50-Day Vol</div>
+                <div>{props.signal.avgPrice.avgPrice50Day !== null?
+                    Number(props.signal.avgPrice.avgPrice50Day.avgVolume).toFixed(0)
+                    : '' }
+                </div>
+            </Grid.Column>
+            <Grid.Column width={2}>
+                <div className="sub-title">50-Day Price</div>
+                <div>{props.signal.avgPrice.avgPrice50Day !== null?
+                    Number(props.signal.avgPrice.avgPrice50Day.avgPrice).toFixed(2)
+                    : '' }
+                </div>
+            </Grid.Column>
         </Grid.Row>
     )
 }
