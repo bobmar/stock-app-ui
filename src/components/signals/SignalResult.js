@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import { buildUrl
     , SIGNAL_BY_DATE_TYPE 
-    , SIGNAL_BY_DATE_TYPES
-    , stockChartsUrl } from '../../config/UrlConfig';
-import '../../assets/css/Stocks.css';
-import axios from 'axios';
-import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+    , SIGNAL_BY_DATE_TYPES} from '../../config/UrlConfig'
+import '../../assets/css/Stocks.css'
+import axios from 'axios'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import SignalRow from './SignalRow'
+import {Grid} from 'semantic-ui-react'
 
 class SignalResult extends Component {
     constructor(props) {
@@ -169,22 +169,13 @@ class SignalResult extends Component {
                         )}
                     </Select>
                 </div>
-                <div className="info-grid">
+                <div>
                 {
                     this.state.signalList && (
                         this.state.signalList.map(s=>
-                            <div key={s.signalId}>
-                                <div className={s.multiList?'multi-list':'single-list'}><a href={stockChartsUrl(s.tickerSymbol)} target='_blank'>{s.tickerSymbol}</a></div>
-                                <div className="sub-title">Closing Price</div>
-                                <div>{Number(s.closePrice).toFixed(2)}</div>
-                                <div className="sub-title">Volume</div>
-                                <div>{s.volume}</div>
-                                <div>
-                                    <Button color='primary' size='small' variant='outlined' onClick={()=>{this.props.setPriceId(s.priceId)}}>
-                                        Price Info
-                                    </Button>
-                                </div>
-                            </div>
+                            <Grid>
+                                <SignalRow signal={s}/>
+                            </Grid>
                         )
     
                     )

@@ -2,6 +2,7 @@
 const TEST_URL = 'http://192.168.0.62:8080/';
 const BASE_URI = 'stocks/'
 const STOCK_CHARTS_URL = 'https://stockcharts.com/h-sc/ui?s={tickerSymbol}'
+const STOCK_CHARTS_PNF = 'https://stockcharts.com/freecharts/pnf.php?c={tickerSymbol},P'
 // Set to true for design-time testing only. Set to false before building for deployment
 let isTest = true;
 export const DASHBOARD_LIST = 'stat/dashboardtype/list';
@@ -34,5 +35,10 @@ export const buildUrl = (uri)=> {
 
 export const stockChartsUrl = (tickerSymbol)=> {
     let url = replacePathVar(STOCK_CHARTS_URL, '{tickerSymbol}', tickerSymbol);
+    return url;
+}
+
+export const stockChartsPnf = (tickerSymbol)=> {
+    let url = replacePathVar(STOCK_CHARTS_PNF, '{tickerSymbol}', tickerSymbol);
     return url;
 }
