@@ -7,8 +7,10 @@ const SignalRow = function(props) {
     return (
         <Grid.Row celled>
             <Grid.Column className={props.signal.multiList?'multi-list':'single-list'}>{props.signal.tickerSymbol}</Grid.Column>
-            <Grid.Column><a href={stockChartsUrl(props.signal.tickerSymbol)} target='_blank'>Sharp</a></Grid.Column>
-            <Grid.Column><a href={stockChartsPnf(props.signal.tickerSymbol)} target='_blank'>PnF</a></Grid.Column>
+            <Grid.Column>
+                <div><a href={stockChartsUrl(props.signal.tickerSymbol)} target='_blank'>Sharp</a></div>
+                <div><a href={stockChartsPnf(props.signal.tickerSymbol)} target='_blank'>PnF</a></div>
+            </Grid.Column>
             <Grid.Column>
                 <div className="sub-title">Open</div>
                 <div>{Number(props.signal.openPrice).toFixed(2)}</div>
@@ -41,6 +43,24 @@ const SignalRow = function(props) {
                 <div>{props.signal.avgPrice.avgPrice50Day !== null?
                     Number(props.signal.avgPrice.avgPrice50Day.avgPrice).toFixed(2)
                     : '' }
+                </div>
+            </Grid.Column>
+            <Grid.Column>
+                <div className="sub-title">Comp</div>
+                <div>{props.signal.ibdLatestStat !== null?
+                    props.signal.ibdLatestStat.compositeRating:'' }
+                </div>
+            </Grid.Column>
+            <Grid.Column>
+                <div className="sub-title">Rel Str</div>
+                <div>{props.signal.ibdLatestStat !== null?
+                    props.signal.ibdLatestStat.relativeStrength:'' }
+                </div>
+            </Grid.Column>
+            <Grid.Column>
+                <div className="sub-title">Grp St</div>
+                <div>{props.signal.ibdLatestStat !== null?
+                    props.signal.ibdLatestStat.groupStrength:'' }
                 </div>
             </Grid.Column>
         </Grid.Row>

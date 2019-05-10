@@ -154,8 +154,8 @@ class SignalResult extends Component {
                         defaultValue={this.state.selectedSignalDate} 
                         onChange={this.handleDateChg}/>
                 </div>
-                <div style={{padding:'5px'}}>
-                    <InputLabel htmlFor="overlay-signal">Signal</InputLabel>
+                <div style={{padding:'5px',margin:'5px 3px 5px 3px'}}>
+                    <InputLabel style={{marginRight: '5px'}} htmlFor="overlay-signal">Signal</InputLabel>
                     <Select
                         value={this.state.overlaySignalType}
                         onChange={this.handleOverlaySelect}
