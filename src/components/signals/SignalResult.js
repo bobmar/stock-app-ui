@@ -8,6 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import SignalRow from './SignalRow'
+import SignalHeader from './SignalHeader'
 import {Grid} from 'semantic-ui-react'
 
 class SignalResult extends Component {
@@ -172,12 +173,12 @@ class SignalResult extends Component {
                 <div>
                 {
                     this.state.signalList && (
-                        this.state.signalList.map(s=>
-                            <Grid>
-                                <SignalRow signal={s}/>
-                            </Grid>
-                        )
-    
+                        <Grid>
+                            <SignalHeader/>
+                        {this.state.signalList.map(s=>
+                            <SignalRow signal={s}/>
+                        )}
+                        </Grid>
                     )
                 }
                 {this.noResults(this.state.signalList)}
