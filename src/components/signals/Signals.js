@@ -11,7 +11,7 @@ import List from '@material-ui/core/List';
 import ListSubHeader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-
+import SignalSection from './SignalSection'
 class Signals extends Component {
     constructor() {
         super();
@@ -24,7 +24,8 @@ class Signals extends Component {
             ],
             selectedSignal: '',
             selectedSignalDesc: '',
-            overlaySignalType: ''
+            overlaySignalType: '',
+            signalList: []
         }
     }
     
@@ -36,10 +37,11 @@ class Signals extends Component {
                     signalTypeList: res.data,
                     selectedSignal: res.data[0].signalCode,
                     overlaySignalType: res.data[0].signalCode,
-                    selectedSignalDesc: res.data[0].signalDesc,
+                    selectedSignalDesc: res.data[0].signalDesc
 
                 });
                 console.log('Signals.retrieveSignalTypes', this.state);
+                this.retrieveSignals(res.data[0].signalCode)
             },
             res=>{
                 console.log("retrieveSignalTypes failed", res);
@@ -56,8 +58,9 @@ class Signals extends Component {
     }
 
     handleSignalClick = (signalCode)=>{
-        this.setState({selectedSignal: signalCode});
-        this.findSignalDesc(signalCode);
+        this.setState({selectedSignal: signalCode})
+        this.findSignalDesc(signalCode)
+        this.retrieveSignals(signalCode)
     }
 
     retrieveCompositePrice = (priceId)=> {
@@ -84,26 +87,54 @@ class Signals extends Component {
         );
     }
 
+    retrieveSignals = (signalType, signalDate)=>{
+        let queryDate = signalDate;
+        if (queryDate === undefined) {
+            queryDate = this.state.selectedSignalDate;
+        }
+        let request = {
+            signalDate: queryDate,
+            signalType: signalType
+        }
+        console.log('retrieveSignals request', request);
+        this.setState({signalList:[]})
+        axios.post(buildUrl(SIGNAL_BY_DATE_TYPE), request)
+        .then(
+            res=>{
+                this.setState(
+                    {
+                        signalList: res.data
+                    }
+                )
+                if (res.data.length > 0) {
+                    this.setState({
+                        selectedSignalDate: res.data[0].priceDate.substring(0,10),
+                        selectedSignal: signalType
+                    })
+                }
+            },
+            res=>{
+                this.setState({useLocalSignals: false});
+                console.log("retrieveSignals failed", res.data);
+            }
+        );
+    }
+
+
     renderSection = ()=> {
         let sectionData = '';
-        console.log('Signals.renderSection', this.state.priceInfo);
-        if (this.state.showCompanyInfo && this.state.priceInfo !== undefined) {
-            sectionData = <CompanyInfo priceInfo={this.state.priceInfo} fromPage={this.toggleCompanyInfo} returnLabel='Show Signals'/>
-        }
-        else {
-            sectionData = <SignalResult
-                signalTypeList={this.getSignalTypeList}
-                selectedSignal={this.getSelectedSignal}
-                selectedSignalDate={this.getSelectedSignalDate}
-                setPriceId={this.setPriceId}
-            />
+        sectionData = <SignalSection
+            signalTypeList={this.getSignalTypeList}
+            selectedSignal={this.getSelectedSignal}
+            selectedSignalDate={this.getSelectedSignalDate}
+            signalList={this.state.signalList}
+        />
 
-        }
         return sectionData;
     }
 
     componentDidMount() {
-        this.retrieveSignalTypes();
+        this.retrieveSignalTypes()
     }
 
     getSignalTypeList = ()=> {
@@ -116,14 +147,6 @@ class Signals extends Component {
 
     getSelectedSignalDate = ()=> {
         return this.state.selectedSignalDate;
-    }
-
-    setPriceId = (priceId)=> {
-        console.log('setPriceId retrieve composite price for ' + priceId);
-        this.retrieveCompositePrice(priceId);
-        this.setState({
-            showCompanyInfo: true
-        });
     }
 
     render() {

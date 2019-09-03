@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import SignalRow from './SignalRow'
 import SignalHeader from './SignalHeader'
-import {Grid} from 'semantic-ui-react'
+import {Table, TableBody} from '@material-ui/core'
 
 class SignalResult extends Component {
     constructor(props) {
@@ -173,12 +173,14 @@ class SignalResult extends Component {
                 <div>
                 {
                     this.state.signalList && (
-                        <Grid>
+                        <Table stickyHeader={true} >
                             <SignalHeader/>
-                        {this.state.signalList.map(s=>
-                            <SignalRow signal={s}/>
-                        )}
-                        </Grid>
+                            <TableBody>
+                            {this.state.signalList.map(s=>
+                                <SignalRow signal={s}/>
+                            )}
+                            </TableBody>
+                        </Table>
                     )
                 }
                 {this.noResults(this.state.signalList)}
