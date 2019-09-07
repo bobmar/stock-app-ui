@@ -17,7 +17,7 @@ const SignalSection = function ( props) {
         }
     })
 
-    let showTableRows = ()=>{
+    const showTableRows = ()=>{
         let response = ''
         if (props.signalList === undefined) {
             response = <div>signalList is undefined</div>

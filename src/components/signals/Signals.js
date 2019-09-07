@@ -7,11 +7,9 @@ import { buildUrl
 import SignalResult from './SignalResult';
 import CompanyInfo from '../stock-list/CompanyInfo';
 import axios from 'axios';
-import List from '@material-ui/core/List';
-import ListSubHeader from '@material-ui/core/ListSubheader';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import SignalSection from './SignalSection'
+import SignalList from './SignalList'
+import { makeStyles } from '@material-ui/core/styles';
 class Signals extends Component {
     constructor() {
         super();
@@ -155,15 +153,7 @@ class Signals extends Component {
                 <div className='content-grid'>
                     <div>
                         <div>
-                            <List>
-                                <ListSubHeader>Signals</ListSubHeader>
-                            {
-                            this.state.signalTypeList.map(st=>
-                                <ListItem button divider dense onClick={()=>this.handleSignalClick(st.signalCode)}>
-                                    <ListItemText primary={st.signalDesc}/>
-                                </ListItem>
-                            )}
-                            </List>
+                            <SignalList signalTypeList={this.state.signalTypeList}/>
                         </div>
                     </div>
                     <div>
