@@ -5,7 +5,7 @@ import {stockChartsUrl
 
 const SignalRow = function(props) {
     return (
-        <TableRow key={props.signal.tickerSymbol}>
+        <TableRow>
             <TableCell>{props.signal.tickerSymbol}</TableCell>
             <TableCell>
                 <div><a href={stockChartsUrl(props.signal.tickerSymbol)} target='_blank'>Sharp</a></div>
@@ -15,7 +15,8 @@ const SignalRow = function(props) {
                 {props.signal.avgPrice.avgPrice50Day !== null?
                     Number(props.signal.avgPrice.avgPrice50Day.avgPrice).toFixed(2)
                     : '' }
-                 / 
+            </TableCell>
+            <TableCell>
                 {props.signal.avgPrice.avgPrice50Day !== null?
                     Number(props.signal.avgPrice.avgPrice50Day.avgVolume).toFixed(0)
                     : '' }

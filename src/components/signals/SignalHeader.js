@@ -11,7 +11,10 @@ const SignalHeader = function(props) {
                     <div>Charts</div>
                 </TableCell>
                 <TableCell>
-                    <div>50-Day Price/Vol</div>
+                    <div>50-Day Price</div>
+                </TableCell>
+                <TableCell>
+                    <div>50-Day Volume</div>
                 </TableCell>
                 <TableCell>
                     <div>Comp/RS/Grp</div>

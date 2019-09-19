@@ -36,7 +36,7 @@ const SignalSection = function ( props) {
             <SignalHeader/>
             <TableBody>
                 {
-                    props.signalList.map((s)=><SignalRow signal={s}/>)
+                    props.signalList.map((s)=><SignalRow  key={s.tickerSymbol} signal={s}/>)
                 }
             </TableBody>
         </Table>

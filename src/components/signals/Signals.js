@@ -4,12 +4,10 @@ import { buildUrl
     , SIGNAL_BY_DATE_TYPE 
     , PRICE_COMPOSITE_BY_ID
     , SIGNAL_BY_DATE_TYPES} from '../../config/UrlConfig';
-import SignalResult from './SignalResult';
-import CompanyInfo from '../stock-list/CompanyInfo';
 import axios from 'axios';
 import SignalSection from './SignalSection'
 import SignalList from './SignalList'
-import { makeStyles } from '@material-ui/core/styles';
+import SignalSelected from './SignalSelected'
 class Signals extends Component {
     constructor() {
         super();
@@ -23,7 +21,8 @@ class Signals extends Component {
             selectedSignal: '',
             selectedSignalDesc: '',
             overlaySignalType: '',
-            signalList: []
+            signalList: [],
+            checkedSignals: []
         }
     }
     
@@ -73,14 +72,6 @@ class Signals extends Component {
             },
             res=>{
                 console.log('retrieveCompositePrice failed', res);
-            }
-        );
-    }
-
-    toggleCompanyInfo = ()=>{
-        this.setState(
-            {
-                showCompanyInfo: !this.state.showCompanyInfo
             }
         );
     }
@@ -147,14 +138,36 @@ class Signals extends Component {
         return this.state.selectedSignalDate;
     }
 
+    handleSelectedSignal = (st)=> {
+        let checkedSignals = this.state.checkedSignals
+        checkedSignals.push(st);
+        checkedSignals.sort((o1,o2)=>{return (o1.signalDesc > o2.signalDesc?1:o1.signalDesc < o2.signalDesc?-1:0)})
+        let signalList = this.state.signalTypeList.filter((item)=>{return (item.signalCode !== st.signalCode)})
+        signalList.sort((o1,o2)=>{return (o1.signalDesc > o2.signalDesc?1:o1.signalDesc < o2.signalDesc?-1:0)})
+        this.setState({checkedSignals:checkedSignals,signalTypeList:signalList})
+        console.log(st)
+    }
+
+    handleDeselectedSignal = (st)=> {
+        let checkedSignals = this.state.checkedSignals.filter((item)=>{return (item.signalCode != st.signalCode)})
+        let signalTypeList = this.state.signalTypeList;
+        signalTypeList.push(st);
+        this.setState({checkedSignals:checkedSignals,signalTypeList:signalTypeList})
+        console.log(checkedSignals, signalTypeList)
+    }
+
     render() {
         return (
             <div>
                 <div className='content-grid'>
                     <div>
-                        <div>
-                            <SignalList signalTypeList={this.state.signalTypeList}/>
-                        </div>
+                        <SignalSelected selectedSignals={this.state.checkedSignals}
+                            deselectSignal={this.handleDeselectedSignal}
+                        />
+                        <SignalList signalTypeList={this.state.signalTypeList} 
+                            signalClickHandler={this.handleSignalClick} 
+                            selectSignal={this.handleSelectedSignal} 
+                        />
                     </div>
                     <div>
                         <div className='info-header'>{this.state.selectedSignalDesc}</div>
