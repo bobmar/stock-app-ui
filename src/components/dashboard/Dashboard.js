@@ -117,7 +117,7 @@ class Dashboard extends Component {
                                 <Table.Body>
                                 {
                                     this.state.resultMap.bullishList.map(item=>
-                                        <DashboardItem item={item} bullbear="positive"/>
+                                        <DashboardItem key={item.tickerSymbol} item={item} bullbear="positive"/>
                                         )
                             }
                                 </Table.Body>
@@ -133,7 +133,7 @@ class Dashboard extends Component {
                             <Table.Body>
                             {
                                 this.state.resultMap.bearishList.map(item=>
-                                    <DashboardItem item={item} bullbear="negative"/>
+                                    <DashboardItem key={item.tickerSymbol} item={item} bullbear="negative"/>
                                     )
                             }
                             </Table.Body>

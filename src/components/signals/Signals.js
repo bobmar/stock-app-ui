@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import { buildUrl
     , SIGNAL_TYPE_LIST
     , SIGNAL_BY_DATE_TYPE 
-    , PRICE_COMPOSITE_BY_ID
-    , SIGNAL_BY_DATE_TYPES} from '../../config/UrlConfig';
+    , SIGNAL_PRICE_BY_TYPE} from '../../config/UrlConfig';
 import axios from 'axios';
 import SignalSection from './SignalSection'
 import SignalList from './SignalList'
@@ -25,7 +24,7 @@ class Signals extends Component {
             checkedSignals: []
         }
     }
-    
+
     retrieveSignalTypes = ()=> {
         axios.get(buildUrl(SIGNAL_TYPE_LIST))
         .then(
@@ -60,20 +59,34 @@ class Signals extends Component {
         this.retrieveSignals(signalCode)
     }
 
-    retrieveCompositePrice = (priceId)=> {
+    retrieveMultiSignals = (stList)=> {
+        let codeList = []
+        stList.forEach(
+            st=>{codeList.push(st.signalCode)}
+        )
         let request = {
-            priceId: priceId
+            signalTypeList: codeList,
+            lookBackDays: 1
         }
-        axios.post(buildUrl(PRICE_COMPOSITE_BY_ID), request)
+        console.log("retrieveMultiSignals", request)
+        this.setState({signalList:[]})
+        axios.post(buildUrl(SIGNAL_PRICE_BY_TYPE), request)
         .then(
             res=>{
-                this.setState({priceInfo:res.data});
-                console.log('Signals.retrieveCompositePrice set priceInfo', res.data);
+                this.setState(
+                    { signalList: res.data }
+                )
+                if (res.data.length > 0) {
+                    this.setState({
+                        selectedSignalDate: res.data[0].priceDate.substring(0,10),
+                    })
+                }
             },
             res=>{
-                console.log('retrieveCompositePrice failed', res);
+                this.setState({useLocalSignals: false});
+                console.log("retrieveMultiSignals failed", res.data);
             }
-        );
+        )
     }
 
     retrieveSignals = (signalType, signalDate)=>{
@@ -108,7 +121,6 @@ class Signals extends Component {
             }
         );
     }
-
 
     renderSection = ()=> {
         let sectionData = '';
@@ -149,11 +161,16 @@ class Signals extends Component {
     }
 
     handleDeselectedSignal = (st)=> {
-        let checkedSignals = this.state.checkedSignals.filter((item)=>{return (item.signalCode != st.signalCode)})
+        let checkedSignals = this.state.checkedSignals.filter((item)=>{return (item.signalCode !== st.signalCode)})
         let signalTypeList = this.state.signalTypeList;
         signalTypeList.push(st);
         this.setState({checkedSignals:checkedSignals,signalTypeList:signalTypeList})
         console.log(checkedSignals, signalTypeList)
+    }
+
+    handleSearchClick = ()=> {
+        console.log("handleSearchClick")
+        this.retrieveMultiSignals(this.state.checkedSignals)
     }
 
     render() {
@@ -163,6 +180,7 @@ class Signals extends Component {
                     <div>
                         <SignalSelected selectedSignals={this.state.checkedSignals}
                             deselectSignal={this.handleDeselectedSignal}
+                            selectClick={this.handleSearchClick}
                         />
                         <SignalList signalTypeList={this.state.signalTypeList} 
                             signalClickHandler={this.handleSignalClick} 

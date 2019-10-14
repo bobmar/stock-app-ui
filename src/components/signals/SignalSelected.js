@@ -26,7 +26,7 @@ const SignalSelected = (props)=> {
       if (props.selectedSignals.length > 0) {
         return ( 
           <ListSubheader>Selected Signals ({props.selectedSignals.length})
-            <Button className={classes.button}>Submit</Button>
+            <Button className={classes.button} onClick={props.selectClick}>Submit</Button>
           </ListSubheader>
         )
       }
