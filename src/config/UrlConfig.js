@@ -4,7 +4,7 @@ const BASE_URI = 'stocks/'
 const STOCK_CHARTS_URL = 'https://stockcharts.com/h-sc/ui?s={tickerSymbol}'
 const STOCK_CHARTS_PNF = 'https://stockcharts.com/freecharts/pnf.php?c={tickerSymbol},P'
 // Set to true for design-time testing only. Set to false before building for deployment
-let isTest = true;
+let isTest = false;
 export const DASHBOARD_LIST = 'stat/dashboardtype/list';
 export const DASHBOARD_BULL_BEAR = 'stat/bullbear/list';
 export const STAT_TYPE_LIST = 'stat/type/list';

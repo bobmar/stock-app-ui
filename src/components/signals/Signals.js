@@ -188,7 +188,7 @@ class Signals extends Component {
                         />
                     </div>
                     <div>
-                        <div className='info-header'>{this.state.selectedSignalDesc}</div>
+                        <div className='info-header'>{this.state.signalList.length>0?'Found ' + this.state.signalList.length + ' signals':''}</div>
                         {this.renderSection()}
                     </div>
                 </div>

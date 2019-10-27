@@ -3,6 +3,7 @@ import '../../assets/css/Stocks.css';
 import CompanyInfo from './CompanyInfo';
 import axios from 'axios';
 import {buildUrl, replacePathVar, TICKER_PAGE, PRICE_COMPOSITE} from '../../config/UrlConfig';
+import Button from '@material-ui/core/Button';
 
 class StockList extends Component {
     constructor() {
@@ -110,7 +111,7 @@ class StockList extends Component {
                     <ul>
                         {this.state.tickerList.map(t=>
                         <li key={t.tickerSymbol}>
-                            <a href='#' onClick={()=>this.retrieveCompositePrice(t.tickerSymbol)}>{t.tickerSymbol}</a>
+                            <Button onClick={()=>this.retrieveCompositePrice(t.tickerSymbol)}>{t.tickerSymbol}</Button>
                             <div className="sub-title">{t.companyName}</div>
                         </li>)}
                     </ul>

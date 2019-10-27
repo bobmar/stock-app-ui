@@ -17,18 +17,6 @@ const SignalSection = function ( props) {
         }
     })
 
-    const showTableRows = ()=>{
-        let response = ''
-        if (props.signalList === undefined) {
-            response = <div>signalList is undefined</div>
-        }
-        else {
-            console.log("showTableRows-signalCount", props.signalList.length)
-            response = props.signalList.map((s)=><SignalRow signal={s}/>)
-            console.log('showTableRows', response)
-        }
-        return response
-    }
     const classes = useStyles();
     return (
         <div className={classes.tableWrapper}>
