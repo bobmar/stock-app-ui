@@ -8,6 +8,9 @@ const SignalRow = function(props) {
         <TableRow>
             <TableCell>{props.signal.tickerSymbol}</TableCell>
             <TableCell>
+                {props.signal.priceDate.substring(0,10)}
+            </TableCell>
+            <TableCell>
                 <div><a href={stockChartsUrl(props.signal.tickerSymbol)} target='_blank'>Sharp</a></div>
                 <div><a href={stockChartsPnf(props.signal.tickerSymbol)} target='_blank'>PnF</a></div>
             </TableCell>

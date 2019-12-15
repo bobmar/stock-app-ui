@@ -8,6 +8,9 @@ const SignalHeader = function(props) {
                     <div>Ticker</div>
                 </TableCell>
                 <TableCell>
+                    <div>Date</div>
+                </TableCell>
+                <TableCell>
                     <div>Charts</div>
                 </TableCell>
                 <TableCell>
