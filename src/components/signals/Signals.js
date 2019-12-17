@@ -66,7 +66,7 @@ class Signals extends Component {
         )
         let request = {
             signalTypeList: codeList,
-            lookBackDays: 1
+            lookBackDays: 5
         }
         console.log("retrieveMultiSignals", request)
         this.setState({signalList:[]})
