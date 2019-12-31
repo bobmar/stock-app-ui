@@ -15,12 +15,12 @@ const SignalRow = function(props) {
                 <div><a href={stockChartsPnf(props.signal.tickerSymbol)} target='_blank'>PnF</a></div>
             </TableCell>
             <TableCell>
-                {props.signal.avgPrice.avgPrice50Day !== null?
+                {props.signal.avgPrice !== null?
                     Number(props.signal.avgPrice.avgPrice50Day.avgPrice).toFixed(2)
                     : '' }
             </TableCell>
             <TableCell>
-                {props.signal.avgPrice.avgPrice50Day !== null?
+                {props.signal.avgPrice !== null?
                     Number(props.signal.avgPrice.avgPrice50Day.avgVolume).toFixed(0)
                     : '' }
             </TableCell>
