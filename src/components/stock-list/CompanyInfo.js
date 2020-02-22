@@ -86,7 +86,7 @@ class CompanyInfo extends Component {
                     </div>
                     <div>
                         <div className='sub-title'>Date</div>
-                        <div>{companyInfo.price.priceDate.substring(0,10)}</div>
+                        <div>{companyInfo.price.priceDate!==undefined?companyInfo.price.priceDate.substring(0,10):''}</div>
                     </div>
                     <div>
                         <div className='sub-title'>Open</div>

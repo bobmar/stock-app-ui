@@ -164,6 +164,7 @@ class Signals extends Component {
         let checkedSignals = this.state.checkedSignals.filter((item)=>{return (item.signalCode !== st.signalCode)})
         let signalTypeList = this.state.signalTypeList;
         signalTypeList.push(st);
+        signalTypeList.sort((o1,o2)=>{return (o1.signalDesc > o2.signalDesc?1:o1.signalDesc < o2.signalDesc?-1:0)})
         this.setState({checkedSignals:checkedSignals,signalTypeList:signalTypeList})
         console.log(checkedSignals, signalTypeList)
     }

@@ -3,7 +3,6 @@ import {Table, TableBody} from '@material-ui/core'
 import SignalHeader from './SignalHeader'
 import SignalRow from './SignalRow'
 import '../../assets/css/Stocks.css'
-import {makeStyles} from '@material-ui/core/styles'
 
 const SignalSection = function ( props) {
 
